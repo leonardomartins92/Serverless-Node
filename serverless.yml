@@ -1,0 +1,61 @@
+service: aws-node-express-api-project
+frameworkVersion: '2'
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  lambdaHashingVersion: '20201221'
+  region: us-east-1
+  iam:
+      role:
+          statements:
+            - Effect: Allow
+              Action:
+                - dynamodb:PutItem
+                - dynamodb:UpdateItem
+                - dynamodb:GetItem
+                - dynamodb:scan
+              Resource:
+                - codigoARNdoDynamodbnaAWS  
+functions:
+  api:
+    handler: src/handler.handler
+    events:
+      - httpApi: '*'
+  insertItem:
+    handler: src/isertItem.handler
+    events:
+      - httpApi: 
+          path: /item
+          method: post
+  fetchItems:
+    handler: src/fetchItem.handler
+    events:
+      - httpApi: 
+          path: /item
+          method: get    
+  fetchItem:
+    handler: src/fetchItem.handler
+    events:
+      - httpApi: 
+          path: /item/{id}
+          method: get    
+  updateItem:
+    handler: src/fetchItem.handler
+    events:
+      - httpApi: 
+          path: /item/{id}
+          method: put                       
+resources:
+  Resources:
+    ItemTableNew:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ItemTableNew
+        BillingMode: PAY_PER_REQUEST
+        AttributeDefinitions:
+          -AttributeName: id
+           AttributeType: S
+        KeySchema:
+          -AttributeName: id
+          KeyType: HASH         
