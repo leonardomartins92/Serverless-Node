@@ -19,33 +19,37 @@ provider:
                 - codigoARNdoDynamodbnaAWS  
 functions:
   api:
-    handler: src/handler.handler
+    handler: src/handlers/handler.handler
     events:
       - httpApi: '*'
   insertItem:
-    handler: src/isertItem.handler
+    handler: src/handlers/isertItem.handler
     events:
       - httpApi: 
           path: /item
           method: post
   fetchItems:
-    handler: src/fetchItem.handler
+    handler: src/handlers/fetchItem.handler
     events:
       - httpApi: 
           path: /item
           method: get    
   fetchItem:
-    handler: src/fetchItem.handler
+    handler: src/handlers/fetchItem.handler
     events:
       - httpApi: 
           path: /item/{id}
           method: get    
   updateItem:
-    handler: src/fetchItem.handler
+    handler: src/handlers/fetchItem.handler
     events:
       - httpApi: 
           path: /item/{id}
-          method: put                       
+          method: put     
+  processItems:
+    handler: src/handlers/processItems.handler
+    events:
+      - schedule: rate(1 day)                            
 resources:
   Resources:
     ItemTableNew:

@@ -1,9 +1,11 @@
 "use strict"
 
 const AWS = require('aws-sdk')
+const middleware = require('../lib/middleware')
+const dynamoDB = new AWS.DynamoDB.DocumentClient();
 
 const fetchItems = async(event)=>{
-    const dynamoDB = new AWS.DynamoDB.DocumentClient();
+   
     let items;
 
     try{
@@ -18,12 +20,10 @@ const fetchItems = async(event)=>{
         }
     }catch(error){
         console.log(error)
-        return{
-            statusCode: 400,
-        }
+        throw new createError.InternalServerError(err);
     }
 }
 
 module.exports ={
-    handler: fetchItems
+    handler: middleware(fetchItems)
 }
