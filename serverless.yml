@@ -28,6 +28,7 @@ functions:
       - httpApi: 
           path: /item
           method: post
+          authorizer: arn:awsenderecodoAwsAuthDeployFuncaoAuthenticate
   fetchItems:
     handler: src/handlers/fetchItem.handler
     events:
